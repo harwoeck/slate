@@ -1,239 +1,164 @@
 ---
-title: API Reference
+title: vikebot Wiki
 
 language_tabs: # must be one of https://git.io/vQNgJ
-  - shell
-  - ruby
-  - python
-  - javascript
-
-toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a>
-
-includes:
-  - errors
+- shell: cURL
 
 search: true
 ---
 
 # Introduction
+Vikebot is a competitive online coding game. This site contains all the informations needed to interact with the complete server infrastructure.
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+# User
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
-
-This example API documentation page was created with [Slate](https://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
-
-# Authentication
-
-> To authorize, use this code:
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
-
+## Get your account
 ```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
+curl -X GET "https://api.vikebot.com/v1/user/get" \
+  -H "authorization: bearer JWT" \
+  -H "cache-control: no-cache"
 ```
 
-```javascript
-const kittn = require('kittn');
+> The above command returns JSON structured like this:
 
-let api = kittn.authorize('meowmeowmeow');
+```json
+{
+  "id": 1,
+  "permission": "verified",
+  "username": "jsmith",
+  "name": "Jon Smith",
+  "email": "jon.smith@gmail.com",
+  "bio": "I'm a test account used in the documentations of vikebot",
+  "location": "Wels, Austria",
+  "company": "@vikebot"
+}
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
+## Update your account
+```shell
+curl -X POST "https://api.vikebot.com/v1/user/update" \
+  -H "authorization: bearer JWT" \
+  -H "cache-control: no-cache" \
+  -H "content-type: application/json" \
+  -d '{
+    "username": "jsmith",
+    "name": "Jon Smith",
+    "email": "jon.smith@gmail.com",
+    "bio": "",
+    "location": "",
+    "company": ""
+  }'
+```
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+> The above command returns JSON structured like this:
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+```json
+{
+  "err": null
+}
+```
 
-`Authorization: meowmeowmeow`
+
+# Register for a game
+
+## List all lobbies
+```shell
+curl -X GET "https://api.vikebot.com/v1/lobby/list" \
+  -H "authorization: bearer JWT" \
+  -H "cache-control: no-cache"
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "joined": [
+     {
+       "id": 4560,
+       "name": "",
+       "wallpaper": "",
+       "joined": 17,
+       "min": 10,
+       "max": 20,
+       "starttime": "2017-09-30 18:00:00",
+       "authtoken": "",
+       "watchtoken": ""
+     }
+  ],
+  "open": [
+    {
+      "id": 4561,
+      "name": "dust",
+      "wallpaper": "",
+      "joined": 4,
+      "min": 7,
+      "max": 15,
+      "starttime": "2017-09-30 18:00:00"
+    }
+  ]
+}
+```
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+  If you provide the <code>Authorization</code>-Header we also will return <code>joined</code> rounds. If this header is not set the response will only include <code>open</code> rounds.
 </aside>
 
-# Kittens
 
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
+## Join a lobby
 ```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
-
-> The above command returns JSON structured like this:
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
-
-This endpoint retrieves all kittens.
-
-### HTTP Request
-
-`GET http://example.com/api/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+curl -X POST "https://api.vikebot.com/v1/lobby/join/ROUND-ID" \
+  -H "authorization: bearer JWT" \
+  -H "cache-control: no-cache"
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+  "err": null
 }
 ```
 
-This endpoint retrieves a specific kitten.
+### Errors
+Code | Message
+---- | -------
+1000 | Roundid must be a int32
+1001 | Insufficient permissions. You need at least 'Verified' status
+1002 | Internal server error. We apologize for the inconvenience
+1003 | Round specified by id doesn't exist
+1004 | You already joined this game
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-### HTTP Request
-
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
-
-## Delete a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
-
+## Exchange your authtoken 
 ```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
+curl -X GET "https://api.vikebot.com/v1/lobby/exchange/YOUR-AUTHTOKEN" \
+  -H "cache-control: no-cache"
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
 {
-  "id": 2,
-  "deleted" : ":("
+  "ticket": "rlcibQmvurKUVGXV",
+  "aeskey": "ak1z7OHUPRvX8DJsnm31NDfQmYE0hfNmFH7paT4WkUQ=",
+  "aesiv": "RQrFKB6UgyqxeXxUcCToDg==",
+  "ipv4": "127.0.0.1",
+  "ipv6": "::1/128",
+  "port": 2400
 }
 ```
 
-This endpoint retrieves a specific kitten.
+The only info a client has after joining a round is his `authtoken`. A 16-charactar long key containing only digits and letters (upper and lower case). To get information about the game server (e.g. host address and port) the client needs to exchange his `authtoken`.
 
-### HTTP Request
+This is done calling the `roundticket` endpoint with a `HTTP GET`.
 
-`DELETE http://example.com/kittens/<ID>`
 
-### URL Parameters
+### Response
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
-
+Field | Description
+----- | -----------
+ticket | A roundticket used during the login procedure to the gameserver. See <a href="">Writing a new SDK</a>.
+aeskey | A 256-bit key encoded in `base64`.
+aesiv | A 128-bit **Initialisation-Vector** used by `AES-GCM`.
+ipv4 | The IPv4 address of the gameserver hosting this round
+ipv6 | The IPv6 address of the gameserver hosting this round
+port | The port to connect to for your gameserver.
