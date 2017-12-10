@@ -6,13 +6,12 @@ language_tabs: # must be one of https://git.io/vQNgJ
 
 search: true
 ---
-
 # Introduction
+
 Vikebot is a competitive online coding game. This site contains all the informations needed to interact with the complete server infrastructure.
 
-# User
+## User - Get your account
 
-## Get your account
 ```shell
 curl -X GET "https://api.vikebot.com/v1/user/get" \
   -H "authorization: bearer JWT" \
@@ -34,7 +33,24 @@ curl -X GET "https://api.vikebot.com/v1/user/get" \
 }
 ```
 
-## Update your account
+## User - Get by ID
+
+```shell
+curl -X GET "https://api.vikebot.com/v1/user/get/id/USERID" \
+  -H "authorization: bearer JWT" \
+  -H "cache-control: no-cache"
+```
+
+## User - Get by Username
+
+```shell
+curl -X GET "https://api.vikebot.com/v1/user/get/username/USERNAME" \
+  -H "authorization: bearer JWT" \
+  -H "cache-control: no-cache"
+```
+
+## User - Update
+
 ```shell
 curl -X POST "https://api.vikebot.com/v1/user/update" \
   -H "authorization: bearer JWT" \
@@ -58,10 +74,8 @@ curl -X POST "https://api.vikebot.com/v1/user/update" \
 }
 ```
 
+## Game - List all lobbies
 
-# Register for a game
-
-## List all lobbies
 ```shell
 curl -X GET "https://api.vikebot.com/v1/lobby/list" \
   -H "authorization: bearer JWT" \
@@ -103,8 +117,8 @@ curl -X GET "https://api.vikebot.com/v1/lobby/list" \
   If you provide the <code>Authorization</code>-Header we also will return <code>joined</code> rounds. If this header is not set the response will only include <code>open</code> rounds.
 </aside>
 
-
 ## Join a lobby
+
 ```shell
 curl -X POST "https://api.vikebot.com/v1/lobby/join/ROUND-ID" \
   -H "authorization: bearer JWT" \
@@ -120,6 +134,7 @@ curl -X POST "https://api.vikebot.com/v1/lobby/join/ROUND-ID" \
 ```
 
 ### Errors
+
 Code | Message
 ---- | -------
 1000 | Roundid must be a int32
@@ -128,7 +143,8 @@ Code | Message
 1003 | Round specified by id doesn't exist
 1004 | You already joined this game
 
-## Exchange your authtoken 
+## Exchange your authtoken
+
 ```shell
 curl -X GET "https://api.vikebot.com/v1/lobby/exchange/YOUR-AUTHTOKEN" \
   -H "cache-control: no-cache"
@@ -139,8 +155,7 @@ curl -X GET "https://api.vikebot.com/v1/lobby/exchange/YOUR-AUTHTOKEN" \
 ```json
 {
   "ticket": "rlcibQmvurKUVGXV",
-  "aeskey": "ak1z7OHUPRvX8DJsnm31NDfQmYE0hfNmFH7paT4WkUQ=",
-  "aesiv": "RQrFKB6UgyqxeXxUcCToDg==",
+  "aes_key": "ak1z7OHUPRvX8DJsnm31NDfQmYE0hfNmFH7paT4WkUQ=",
   "ipv4": "127.0.0.1",
   "ipv6": "::1/128",
   "port": 2400
@@ -151,14 +166,12 @@ The only info a client has after joining a round is his `authtoken`. A 16-charac
 
 This is done calling the `roundticket` endpoint with a `HTTP GET`.
 
-
 ### Response
 
 Field | Description
 ----- | -----------
 ticket | A roundticket used during the login procedure to the gameserver. See <a href="">Writing a new SDK</a>.
-aeskey | A 256-bit key encoded in `base64`.
-aesiv | A 128-bit **Initialisation-Vector** used by `AES-GCM`.
+aes_key | A 256-bit key encoded in `base64`.
 ipv4 | The IPv4 address of the gameserver hosting this round
 ipv6 | The IPv6 address of the gameserver hosting this round
 port | The port to connect to for your gameserver.
