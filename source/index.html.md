@@ -10,6 +10,23 @@ search: true
 
 Vikebot is a competitive online coding game. This site contains all the informations needed to interact with the complete server infrastructure.
 
+# REST
+
+## Test access
+
+```shell
+curl -X GET "https://api.vikebot.com/v1/test" \
+  -H "cache-control: no-cache"
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "response": "ok"
+}
+```
+
 ## User - Get your account
 
 ```shell
@@ -22,14 +39,23 @@ curl -X GET "https://api.vikebot.com/v1/user/get" \
 
 ```json
 {
-  "id": 1,
-  "permission": "verified",
+  "id": 100000,
+  "permission": 1,
+  "permission_string": "default",
   "username": "jsmith",
   "name": "Jon Smith",
-  "email": "jon.smith@gmail.com",
+  "emails": [
+
+  ],
   "bio": "I'm a test account used in the documentations of vikebot",
   "location": "Wels, Austria",
-  "company": "@vikebot"
+  "web": [
+    "https://vikebot.com"
+  ],
+  "company": "@vikebot",
+  "social": {
+    "github":"https://github.com/vikebot"
+  }
 }
 ```
 
@@ -37,17 +63,71 @@ curl -X GET "https://api.vikebot.com/v1/user/get" \
 
 ```shell
 curl -X GET "https://api.vikebot.com/v1/user/get/id/USERID" \
-  -H "authorization: bearer JWT" \
   -H "cache-control: no-cache"
 ```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "id": 100000,
+  "permission": 1,
+  "permission_string": "default",
+  "username": "jsmith",
+  "name": "Jon Smith",
+  "emails": [
+
+  ],
+  "bio": "I'm a test account used in the documentations of vikebot",
+  "location": "Wels, Austria",
+  "web": [
+    "https://vikebot.com"
+  ],
+  "company": "@vikebot",
+  "social": {
+    "github":"https://github.com/vikebot"
+  }
+}
+```
+
+<aside class="notice">
+  If you provide the <code>Authorization</code>-Header we also will return <code>joined</code> rounds. If this header is not set the response will only include <code>open</code> rounds.
+</aside>
 
 ## User - Get by Username
 
 ```shell
 curl -X GET "https://api.vikebot.com/v1/user/get/username/USERNAME" \
-  -H "authorization: bearer JWT" \
   -H "cache-control: no-cache"
 ```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "id": 100000,
+  "permission": 1,
+  "permission_string": "default",
+  "username": "jsmith",
+  "name": "Jon Smith",
+  "emails": [
+
+  ],
+  "bio": "I'm a test account used in the documentations of vikebot",
+  "location": "Wels, Austria",
+  "web": [
+    "https://vikebot.com"
+  ],
+  "company": "@vikebot",
+  "social": {
+    "github":"https://github.com/vikebot"
+  }
+}
+```
+
+<aside class="notice">
+  If you provide the <code>Authorization</code>-Header we also will return <code>joined</code> rounds. If this header is not set the response will only include <code>open</code> rounds.
+</aside>
 
 ## User - Update
 
@@ -74,53 +154,51 @@ curl -X POST "https://api.vikebot.com/v1/user/update" \
 }
 ```
 
-## Game - List all lobbies
+## Register - Confirm
 
 ```shell
-curl -X GET "https://api.vikebot.com/v1/lobby/list" \
+curl -X POST "https://api.vikebot.com/v1/register/confirm" \
   -H "authorization: bearer JWT" \
+  -H "cache-control: no-cache" \
+  -H "content-type: application/json" \
+  -d '{
+    "username": "jsmith",
+    "name": "Jon Smith",
+    "email": "jon.smith@gmail.com",
+    "bio": "",
+    "location": "",
+    "company": ""
+  }'
+```
+
+## Round - Active
+
+```shell
+curl -X GET "https://api.vikebot.com/v1/round/active" \
   -H "cache-control: no-cache"
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
-{
-  "joined": [
-     {
-       "id": 4560,
-       "name": "",
-       "wallpaper": "",
-       "joined": 17,
-       "min": 10,
-       "max": 20,
-       "starttime": "2017-09-30 18:00:00",
-       "authtoken": "",
-       "watchtoken": ""
-     }
-  ],
-  "open": [
-    {
-      "id": 4561,
-      "name": "dust",
-      "wallpaper": "",
-      "joined": 4,
-      "min": 7,
-      "max": 15,
-      "starttime": "2017-09-30 18:00:00"
-    }
-  ]
-}
+[
+  {
+    "id": 1,
+    "name": "Test Game",
+    "wallpaper": "https://goo.gl/uCyW7n",
+    "joined": 0,
+    "min": 10,
+    "max": 40,
+    "starttime": "2017-12-28T08:26:13Z",
+    "status": 1
+  }
+]
 ```
 
-<aside class="notice">
-  If you provide the <code>Authorization</code>-Header we also will return <code>joined</code> rounds. If this header is not set the response will only include <code>open</code> rounds.
-</aside>
-
-## Join a lobby
+## Round - Join
 
 ```shell
-curl -X POST "https://api.vikebot.com/v1/lobby/join/ROUND-ID" \
+curl -X POST "https://api.vikebot.com/v1/round/join/ROUNDID" \
   -H "authorization: bearer JWT" \
   -H "cache-control: no-cache"
 ```
@@ -133,20 +211,37 @@ curl -X POST "https://api.vikebot.com/v1/lobby/join/ROUND-ID" \
 }
 ```
 
-### Errors
-
-Code | Message
----- | -------
-1000 | Roundid must be a int32
-1001 | Insufficient permissions. You need at least 'Verified' status
-1002 | Internal server error. We apologize for the inconvenience
-1003 | Round specified by id doesn't exist
-1004 | You already joined this game
-
-## Exchange your authtoken
+## Roundentry - Active
 
 ```shell
-curl -X GET "https://api.vikebot.com/v1/lobby/exchange/YOUR-AUTHTOKEN" \
+curl -X POST "https://api.vikebot.com/v1/round/join/ROUNDID" \
+  -H "authorization: bearer JWT" \
+  -H "cache-control: no-cache"
+```
+
+> The above command returns JSON structured like this:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Test Game",
+    "wallpaper": "https://goo.gl/uCyW7n",
+    "joined": 0,
+    "min": 10,
+    "max": 40,
+    "starttime": "2017-12-28T08:26:13Z",
+    "status": 1,
+    "authtoken": "",
+    "watchtoken": ""
+  }
+]
+```
+
+## Roundentry - Connectinfo
+
+```shell
+curl -X GET "https://api.vikebot.com/v1/roundentry/connectinfo/YOUR-AUTHTOKEN" \
   -H "cache-control: no-cache"
 ```
 
@@ -162,16 +257,8 @@ curl -X GET "https://api.vikebot.com/v1/lobby/exchange/YOUR-AUTHTOKEN" \
 }
 ```
 
-The only info a client has after joining a round is his `authtoken`. A 16-charactar long key containing only digits and letters (upper and lower case). To get information about the game server (e.g. host address and port) the client needs to exchange his `authtoken`.
+The only info a client has after joining a round is his `authtoken`. A 16-charactar long token containing only digits and letters (upper and lower case). To get information about the game server (e.g. host address and port) the client needs to exchange his `authtoken`.
 
-This is done calling the `roundticket` endpoint with a `HTTP GET`.
+This is done by calling the `roundentry/connectinfo` endpoint with a `HTTP GET` request.
 
-### Response
-
-Field | Description
------ | -----------
-ticket | A roundticket used during the login procedure to the gameserver. See <a href="">Writing a new SDK</a>.
-aes_key | A 256-bit key encoded in `base64`.
-ipv4 | The IPv4 address of the gameserver hosting this round
-ipv6 | The IPv6 address of the gameserver hosting this round
-port | The port to connect to for your gameserver.
+Returned is the `ticket` used for authentication on the game server, an `AES256`-bit key encoded in base64, the addresses and ports of the game server.
