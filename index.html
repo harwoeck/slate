@@ -222,27 +222,37 @@
             <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
           </li>
           <li>
-            <a href="#user" class="toc-h1 toc-link" data-title="User">User</a>
+            <a href="#rest" class="toc-h1 toc-link" data-title="REST">REST</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#get-your-account" class="toc-h2 toc-link" data-title="User">Get your account</a>
+                    <a href="#test-access" class="toc-h2 toc-link" data-title="REST">Test access</a>
                   </li>
                   <li>
-                    <a href="#update-your-account" class="toc-h2 toc-link" data-title="User">Update your account</a>
-                  </li>
-              </ul>
-          </li>
-          <li>
-            <a href="#register-for-a-game" class="toc-h1 toc-link" data-title="Register for a game">Register for a game</a>
-              <ul class="toc-list-h2">
-                  <li>
-                    <a href="#list-all-lobbies" class="toc-h2 toc-link" data-title="Register for a game">List all lobbies</a>
+                    <a href="#user-get-your-account" class="toc-h2 toc-link" data-title="REST">User - Get your account</a>
                   </li>
                   <li>
-                    <a href="#join-a-lobby" class="toc-h2 toc-link" data-title="Register for a game">Join a lobby</a>
+                    <a href="#user-get-by-id" class="toc-h2 toc-link" data-title="REST">User - Get by ID</a>
                   </li>
                   <li>
-                    <a href="#exchange-your-authtoken" class="toc-h2 toc-link" data-title="Register for a game">Exchange your authtoken</a>
+                    <a href="#user-get-by-username" class="toc-h2 toc-link" data-title="REST">User - Get by Username</a>
+                  </li>
+                  <li>
+                    <a href="#user-update" class="toc-h2 toc-link" data-title="REST">User - Update</a>
+                  </li>
+                  <li>
+                    <a href="#register-confirm" class="toc-h2 toc-link" data-title="REST">Register - Confirm</a>
+                  </li>
+                  <li>
+                    <a href="#round-active" class="toc-h2 toc-link" data-title="REST">Round - Active</a>
+                  </li>
+                  <li>
+                    <a href="#round-join" class="toc-h2 toc-link" data-title="REST">Round - Join</a>
+                  </li>
+                  <li>
+                    <a href="#roundentry-active" class="toc-h2 toc-link" data-title="REST">Roundentry - Active</a>
+                  </li>
+                  <li>
+                    <a href="#roundentry-connectinfo" class="toc-h2 toc-link" data-title="REST">Roundentry - Connectinfo</a>
                   </li>
               </ul>
           </li>
@@ -253,7 +263,16 @@
       <div class="content">
         <h1 id='introduction'>Introduction</h1>
 <p>Vikebot is a competitive online coding game. This site contains all the informations needed to interact with the complete server infrastructure.</p>
-<h1 id='user'>User</h1><h2 id='get-your-account'>Get your account</h2><pre class="highlight shell tab-shell"><code>curl -X GET <span class="s2">"https://api.vikebot.com/v1/user/get"</span> <span class="se">\</span>
+<h1 id='rest'>REST</h1><h2 id='test-access'>Test access</h2><pre class="highlight shell tab-shell"><code>curl -X GET <span class="s2">"https://api.vikebot.com/v1/test"</span> <span class="se">\</span>
+  -H <span class="s2">"cache-control: no-cache"</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"response"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ok"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h2 id='user-get-your-account'>User - Get your account</h2><pre class="highlight shell tab-shell"><code>curl -X GET <span class="s2">"https://api.vikebot.com/v1/user/get"</span> <span class="se">\</span>
   -H <span class="s2">"authorization: bearer JWT"</span> <span class="se">\</span>
   -H <span class="s2">"cache-control: no-cache"</span>
 </code></pre>
@@ -261,16 +280,83 @@
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"permission"</span><span class="p">:</span><span class="w"> </span><span class="s2">"verified"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">100000</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"permission"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"permission_string"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jsmith"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Jon Smith"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jon.smith@gmail.com"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"emails"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+
+  </span><span class="p">],</span><span class="w">
   </span><span class="s2">"bio"</span><span class="p">:</span><span class="w"> </span><span class="s2">"I'm a test account used in the documentations of vikebot"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Wels, Austria"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"company"</span><span class="p">:</span><span class="w"> </span><span class="s2">"@vikebot"</span><span class="w">
+  </span><span class="s2">"web"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"https://vikebot.com"</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"company"</span><span class="p">:</span><span class="w"> </span><span class="s2">"@vikebot"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"social"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"github"</span><span class="p">:</span><span class="s2">"https://github.com/vikebot"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre><h2 id='update-your-account'>Update your account</h2><pre class="highlight shell tab-shell"><code>curl -X POST <span class="s2">"https://api.vikebot.com/v1/user/update"</span> <span class="se">\</span>
+</span></code></pre><h2 id='user-get-by-id'>User - Get by ID</h2><pre class="highlight shell tab-shell"><code>curl -X GET <span class="s2">"https://api.vikebot.com/v1/user/get/id/USERID"</span> <span class="se">\</span>
+  -H <span class="s2">"cache-control: no-cache"</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">100000</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"permission"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"permission_string"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jsmith"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Jon Smith"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"emails"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"bio"</span><span class="p">:</span><span class="w"> </span><span class="s2">"I'm a test account used in the documentations of vikebot"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Wels, Austria"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"web"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"https://vikebot.com"</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"company"</span><span class="p">:</span><span class="w"> </span><span class="s2">"@vikebot"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"social"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"github"</span><span class="p">:</span><span class="s2">"https://github.com/vikebot"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside class="notice">
+  If you provide the <code>Authorization</code>-Header we also will return <code>joined</code> rounds. If this header is not set the response will only include <code>open</code> rounds.
+</aside>
+<h2 id='user-get-by-username'>User - Get by Username</h2><pre class="highlight shell tab-shell"><code>curl -X GET <span class="s2">"https://api.vikebot.com/v1/user/get/username/USERNAME"</span> <span class="se">\</span>
+  -H <span class="s2">"cache-control: no-cache"</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">100000</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"permission"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"permission_string"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jsmith"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Jon Smith"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"emails"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"bio"</span><span class="p">:</span><span class="w"> </span><span class="s2">"I'm a test account used in the documentations of vikebot"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Wels, Austria"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"web"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"https://vikebot.com"</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"company"</span><span class="p">:</span><span class="w"> </span><span class="s2">"@vikebot"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"social"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"github"</span><span class="p">:</span><span class="s2">"https://github.com/vikebot"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside class="notice">
+  If you provide the <code>Authorization</code>-Header we also will return <code>joined</code> rounds. If this header is not set the response will only include <code>open</code> rounds.
+</aside>
+<h2 id='user-update'>User - Update</h2><pre class="highlight shell tab-shell"><code>curl -X POST <span class="s2">"https://api.vikebot.com/v1/user/update"</span> <span class="se">\</span>
   -H <span class="s2">"authorization: bearer JWT"</span> <span class="se">\</span>
   -H <span class="s2">"cache-control: no-cache"</span> <span class="se">\</span>
   -H <span class="s2">"content-type: application/json"</span> <span class="se">\</span>
@@ -289,44 +375,37 @@
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"err"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre><h1 id='register-for-a-game'>Register for a game</h1><h2 id='list-all-lobbies'>List all lobbies</h2><pre class="highlight shell tab-shell"><code>curl -X GET <span class="s2">"https://api.vikebot.com/v1/lobby/list"</span> <span class="se">\</span>
+</span></code></pre><h2 id='register-confirm'>Register - Confirm</h2><pre class="highlight shell tab-shell"><code>curl -X POST <span class="s2">"https://api.vikebot.com/v1/register/confirm"</span> <span class="se">\</span>
   -H <span class="s2">"authorization: bearer JWT"</span> <span class="se">\</span>
+  -H <span class="s2">"cache-control: no-cache"</span> <span class="se">\</span>
+  -H <span class="s2">"content-type: application/json"</span> <span class="se">\</span>
+  -d <span class="s1">'{
+    "username": "jsmith",
+    "name": "Jon Smith",
+    "email": "jon.smith@gmail.com",
+    "bio": "",
+    "location": "",
+    "company": ""
+  }'</span>
+</code></pre><h2 id='round-active'>Round - Active</h2><pre class="highlight shell tab-shell"><code>curl -X GET <span class="s2">"https://api.vikebot.com/v1/round/active"</span> <span class="se">\</span>
   -H <span class="s2">"cache-control: no-cache"</span>
 </code></pre>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"joined"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-     </span><span class="p">{</span><span class="w">
-       </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">4560</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"wallpaper"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"joined"</span><span class="p">:</span><span class="w"> </span><span class="mi">17</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"min"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"max"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"starttime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-09-30 18:00:00"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"authtoken"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"watchtoken"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
-     </span><span class="p">}</span><span class="w">
-  </span><span class="p">],</span><span class="w">
-  </span><span class="s2">"open"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">4561</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dust"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"wallpaper"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"joined"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"min"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"max"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"starttime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-09-30 18:00:00"</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-  </span><span class="p">]</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<aside class="notice">
-  If you provide the <code>Authorization</code>-Header we also will return <code>joined</code> rounds. If this header is not set the response will only include <code>open</code> rounds.
-</aside>
-<h2 id='join-a-lobby'>Join a lobby</h2><pre class="highlight shell tab-shell"><code>curl -X POST <span class="s2">"https://api.vikebot.com/v1/lobby/join/ROUND-ID"</span> <span class="se">\</span>
+<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Test Game"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"wallpaper"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://goo.gl/uCyW7n"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"joined"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"min"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"max"</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"starttime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-28T08:26:13Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre><h2 id='round-join'>Round - Join</h2><pre class="highlight shell tab-shell"><code>curl -X POST <span class="s2">"https://api.vikebot.com/v1/round/join/ROUNDID"</span> <span class="se">\</span>
   -H <span class="s2">"authorization: bearer JWT"</span> <span class="se">\</span>
   -H <span class="s2">"cache-control: no-cache"</span>
 </code></pre>
@@ -336,35 +415,28 @@
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"err"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre><h3 id='errors'>Errors</h3>
-<table><thead>
-<tr>
-<th>Code</th>
-<th>Message</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>1000</td>
-<td>Roundid must be a int32</td>
-</tr>
-<tr>
-<td>1001</td>
-<td>Insufficient permissions. You need at least &#39;Verified&#39; status</td>
-</tr>
-<tr>
-<td>1002</td>
-<td>Internal server error. We apologize for the inconvenience</td>
-</tr>
-<tr>
-<td>1003</td>
-<td>Round specified by id doesn&#39;t exist</td>
-</tr>
-<tr>
-<td>1004</td>
-<td>You already joined this game</td>
-</tr>
-</tbody></table>
-<h2 id='exchange-your-authtoken'>Exchange your authtoken</h2><pre class="highlight shell tab-shell"><code>curl -X GET <span class="s2">"https://api.vikebot.com/v1/lobby/exchange/YOUR-AUTHTOKEN"</span> <span class="se">\</span>
+</span></code></pre><h2 id='roundentry-active'>Roundentry - Active</h2><pre class="highlight shell tab-shell"><code>curl -X POST <span class="s2">"https://api.vikebot.com/v1/round/join/ROUNDID"</span> <span class="se">\</span>
+  -H <span class="s2">"authorization: bearer JWT"</span> <span class="se">\</span>
+  -H <span class="s2">"cache-control: no-cache"</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Test Game"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"wallpaper"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://goo.gl/uCyW7n"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"joined"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"min"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"max"</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"starttime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-28T08:26:13Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"authtoken"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"watchtoken"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre><h2 id='roundentry-connectinfo'>Roundentry - Connectinfo</h2><pre class="highlight shell tab-shell"><code>curl -X GET <span class="s2">"https://api.vikebot.com/v1/roundentry/connectinfo/YOUR-AUTHTOKEN"</span> <span class="se">\</span>
   -H <span class="s2">"cache-control: no-cache"</span>
 </code></pre>
 <blockquote>
@@ -372,48 +444,17 @@
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"ticket"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rlcibQmvurKUVGXV"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"aeskey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ak1z7OHUPRvX8DJsnm31NDfQmYE0hfNmFH7paT4WkUQ="</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"aesiv"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RQrFKB6UgyqxeXxUcCToDg=="</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"aes_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ak1z7OHUPRvX8DJsnm31NDfQmYE0hfNmFH7paT4WkUQ="</span><span class="p">,</span><span class="w">
   </span><span class="s2">"ipv4"</span><span class="p">:</span><span class="w"> </span><span class="s2">"127.0.0.1"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"ipv6"</span><span class="p">:</span><span class="w"> </span><span class="s2">"::1/128"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">2400</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>The only info a client has after joining a round is his <code>authtoken</code>. A 16-charactar long key containing only digits and letters (upper and lower case). To get information about the game server (e.g. host address and port) the client needs to exchange his <code>authtoken</code>.</p>
+<p>The only info a client has after joining a round is his <code>authtoken</code>. A 16-charactar long token containing only digits and letters (upper and lower case). To get information about the game server (e.g. host address and port) the client needs to exchange his <code>authtoken</code>.</p>
 
-<p>This is done calling the <code>roundticket</code> endpoint with a <code>HTTP GET</code>.</p>
-<h3 id='response'>Response</h3>
-<table><thead>
-<tr>
-<th>Field</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>ticket</td>
-<td>A roundticket used during the login procedure to the gameserver. See <a href="">Writing a new SDK</a>.</td>
-</tr>
-<tr>
-<td>aeskey</td>
-<td>A 256-bit key encoded in <code>base64</code>.</td>
-</tr>
-<tr>
-<td>aesiv</td>
-<td>A 128-bit <strong>Initialisation-Vector</strong> used by <code>AES-GCM</code>.</td>
-</tr>
-<tr>
-<td>ipv4</td>
-<td>The IPv4 address of the gameserver hosting this round</td>
-</tr>
-<tr>
-<td>ipv6</td>
-<td>The IPv6 address of the gameserver hosting this round</td>
-</tr>
-<tr>
-<td>port</td>
-<td>The port to connect to for your gameserver.</td>
-</tr>
-</tbody></table>
+<p>This is done by calling the <code>roundentry/connectinfo</code> endpoint with a <code>HTTP GET</code> request.</p>
+
+<p>Returned is the <code>ticket</code> used for authentication on the game server, an <code>AES256</code>-bit key encoded in base64, the addresses and ports of the game server.</p>
 
       </div>
       <div class="dark-box">
